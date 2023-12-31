@@ -1,4 +1,6 @@
-workspace = { members = ["libcint-sys"] }
+[workspace]
+members = ["libcint-sys"]
+
 [package]
 name = "brint"
 version = "0.1.0"
