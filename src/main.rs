@@ -17,7 +17,7 @@ fn main() {
     let nbas: c_int = 4;
     // atm_slots = 6; bas_slots = 8;
     let mut atm = vec![0; natm as usize * ATM_SLOTS as usize];
-    let mut bas = vec![0; nbas as usize * BAS_SLOTS as usize];
+    let mut bas: Vec<c_int> = vec![0; nbas as usize * BAS_SLOTS as usize];
     let mut env = vec![0.0; 10000];
 
     let mut off = PTR_ENV_START as usize;
@@ -49,42 +49,42 @@ fn main() {
     bas[(ANG_OF + BAS_SLOTS * n) as usize] = 0;
     bas[(NPRIM_OF + BAS_SLOTS * n) as usize] = 3;
     bas[(NCTR_OF + BAS_SLOTS * n) as usize] = 2;
-    bas[(PTR_EXP + BAS_SLOTS * n) as usize] = off;
+    bas[(PTR_EXP + BAS_SLOTS * n) as usize] = off as c_int;
     env[off + 0] = 6.0;
     env[off + 1] = 2.0;
     env[off + 2] = 0.8;
     off += 3;
-    bas[(PTR_COEFF + BAS_SLOTS * n) as usize] = off;
+    bas[(PTR_COEFF + BAS_SLOTS * n) as usize] = off as c_int;
     unsafe {
         env[off + 0] = 0.7
             * CINTgto_norm(
                 bas[(ANG_OF + BAS_SLOTS * n) as usize] as c_int,
-                env[bas[(PTR_EXP + BAS_SLOTS * n) as usize] + 0],
+                env[(bas[(PTR_EXP + BAS_SLOTS * n) as usize] + 0) as usize],
             );
         env[off + 1] = 0.6
             * CINTgto_norm(
                 bas[(ANG_OF + BAS_SLOTS * n) as usize] as c_int,
-                env[bas[(PTR_EXP + BAS_SLOTS * n) as usize] + 1],
+                env[(bas[(PTR_EXP + BAS_SLOTS * n) as usize] + 1) as usize],
             );
         env[off + 2] = 0.5
             * CINTgto_norm(
                 bas[(ANG_OF + BAS_SLOTS * n) as usize] as c_int,
-                env[bas[(PTR_EXP + BAS_SLOTS * n) as usize] + 2],
+                env[(bas[(PTR_EXP + BAS_SLOTS * n) as usize] + 2) as usize],
             );
         env[off + 3] = 0.4
             * CINTgto_norm(
                 bas[(ANG_OF + BAS_SLOTS * n) as usize] as c_int,
-                env[bas[(PTR_EXP + BAS_SLOTS * n) as usize] + 0],
+                env[(bas[(PTR_EXP + BAS_SLOTS * n) as usize] + 0) as usize],
             );
         env[off + 4] = 0.3
             * CINTgto_norm(
                 bas[(ANG_OF + BAS_SLOTS * n) as usize] as c_int,
-                env[bas[(PTR_EXP + BAS_SLOTS * n) as usize] + 1],
+                env[(bas[(PTR_EXP + BAS_SLOTS * n) as usize] + 1) as usize],
             );
         env[off + 5] = 0.2
             * CINTgto_norm(
                 bas[(ANG_OF + BAS_SLOTS * n) as usize] as c_int,
-                env[bas[(PTR_EXP + BAS_SLOTS * n) as usize] + 2],
+                env[(bas[(PTR_EXP + BAS_SLOTS * n) as usize] + 2) as usize],
             );
     }
     off += 6;
@@ -95,15 +95,15 @@ fn main() {
     bas[(ANG_OF + BAS_SLOTS * n) as usize] = 1;
     bas[(NPRIM_OF + BAS_SLOTS * n) as usize] = 1;
     bas[(NCTR_OF + BAS_SLOTS * n) as usize] = 1;
-    bas[(PTR_EXP + BAS_SLOTS * n) as usize] = off;
+    bas[(PTR_EXP + BAS_SLOTS * n) as usize] = off as c_int;
     env[off + 0] = 0.9;
     off += 1;
-    bas[(PTR_COEFF + BAS_SLOTS * n) as usize] = off;
+    bas[(PTR_COEFF + BAS_SLOTS * n) as usize] = off as c_int;
     unsafe {
         env[off + 0] = 1.
             * CINTgto_norm(
                 bas[(ANG_OF + BAS_SLOTS * n) as usize] as c_int,
-                env[bas[(PTR_EXP + BAS_SLOTS * n) as usize]],
+                env[(bas[(PTR_EXP + BAS_SLOTS * n) as usize]) as usize],
             );
     }
     off += 1;
@@ -156,7 +156,7 @@ fn main() {
         let mut buf = vec![0.0; (di * dj) as usize * 3];
         if (0
             != cint1e_ipnuc_cart(
-                buf.as_mut_ptr().cast(),
+                buf.as_mut_ptr(),
                 shls.as_mut_ptr().cast(),
                 atm.as_mut_ptr().cast(),
                 natm,
